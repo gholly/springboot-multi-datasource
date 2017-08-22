@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.multiDataSource.dao.manage.LoginLogMapper">
+
+    <resultMap id="loginLogResultMap" type="com.test.multiDataSource.model.manage.LoginLog">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="loginIp" column="login_ip"/>
+        <result property="loginTime" column="login_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <sql id="sql1">
+        `id`,`user_id`,`login_ip`,`login_time`,`status`
+    </sql>
+
+    <select id="findBy" resultMap="loginLogResultMap" parameterType="HashMap">
+        select
+        <include refid="sql1"/>
+        from `login_log`
+        <trim prefixOverrides="and" prefix="where">
+            <if test="id!=null">
+                and `id`=#{id}
+            </if>
+            <if test="user_id!=null">
+                and `user_id`=#{userId}
+            </if>
+            <if test="login_ip!=null">
+                and `login_ip`=#{loginIp}
+            </if>
+            <if test="login_time!=null">
+                and `login_time`=#{loginTime}
+            </if>
+            <if test="status!=null">
+                and `status`=#{status}
+            </if>
+        </trim>
+    </select>
+
+    <select id="countBy" resultType="Integer" parameterType="HashMap">
+        select count(*)
+        from `login_log`
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id!=null">
+                and `id`=#{id}
+            </if>
+            <if test="user_id!=null">
+                and `user_id`=#{userId}
+            </if>
+            <if test="login_ip!=null">
+                and `login_ip`=#{loginIp}
+            </if>
+            <if test="login_time!=null">
+                and `login_time`=#{loginTime}
+            </if>
+            <if test="status!=null">
+                and `status`=#{status}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getEntityById" resultMap="loginLogResultMap" parameterType="Integer">
+        select * from `login_log` where `id`=#{id}
+    </select>
+
+    <insert id="insert" parameterType="com.test.multiDataSource.model.manage.LoginLog" useGeneratedKeys="true" keyColumn="id">
+        insert into `login_log` (
+        <trim suffix=")" suffixOverrides=",">
+            <if test="id!=null">`id`</if>
+            <if test="user_id!=null">`user_id`</if>
+            <if test="login_ip!=null">login_ip</if>
+            <if test="login_time!=null">login_time</if>
+            <if test="status!=null">status</if>
+        </trim>
+        VALUES (
+        <trim suffix=")" suffixOverrides=",">
+            <if test="id!=null">#{id}</if>
+            <if test="user_id!=null">#{userId}</if>
+            <if test="login_ip!=null">#{loginIp}</if>
+            <if test="login_time!=null">#{loginTime}</if>
+            <if test="status">#{status}</if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyColumn="id">
+        insert into `login_log` (id,user_id,login_ip,login_time,status) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.userId},#{item.loginIp},#{item.loginTime},#{status})
+        </foreach>
+    </insert>
+
+    <update id="update"  parameterType="com.test.multiDataSource.model.manage.LoginLog">
+        update `login_log`
+        <set>
+            <if test="id!=null">`id`=#{id}</if>
+            <if test="login_ip!=null">`login_ip`=#{loginIp}</if>
+            <if test="login_time!=null">`login_time`=#{loginTime}</if>
+            <if test="user_id!=null">`user_id`=#{userId}</if>
+            <if test="status">`status`=#{status}</if>
+        </set>
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from `login_log`
+        where `id`=#{id}
+    </delete>
+
+    <delete id="deleteBatch">
+        DELETE FROM `login_log`
+        <where>
+            id in
+            <foreach collection="array"  item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+    </delete>
+
+
+
+
+</mapper>

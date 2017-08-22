@@ -1,0 +1,32 @@
+server:
+  port: 8388
+
+
+manage:
+    url: jdbc:mysql://127.0.0.1/manage?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true
+    username: upgrade
+    password: upgrade
+    driverClassName: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    validation-query: select 'x'
+    test-while-idle: true
+test:
+    url: jdbc:mysql://127.0.0.1/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true
+    username: upgrade
+    password: upgrade
+    driverClassName: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    validation-query: select 'x'
+    test-while-idle: true
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+
+
+
+logging:
+  level.com.test.data: debug
