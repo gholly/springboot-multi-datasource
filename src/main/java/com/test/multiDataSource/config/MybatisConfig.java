@@ -4,7 +4,6 @@ import com.test.multiDataSource.enums.DataSourceType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -22,8 +21,7 @@ import java.util.HashMap;
 @Configuration
 @MapperScan("com.test.multiDataSource.dao")  //扫描到dao层实现mybatis的xml文件与dao层的文件进行映射绑定
 public class MybatisConfig {
-    @Autowired
-    DataSource dataSource;
+
 
 
     /**
@@ -75,7 +73,7 @@ public class MybatisConfig {
 
 
     @Bean(name = "sqlSessionFactory")
-    public SqlSessionFactory sqlSessionFactory() throws Exception {
+    public SqlSessionFactory sqlSessionFactory(DynamicDataSource dataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
